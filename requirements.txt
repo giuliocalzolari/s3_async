@@ -1,0 +1,7 @@
+argh>=0.26.1
+pathtools>=0.1.2
+pyCLI>=2.0.3
+PyYAML>=3.11
+watchdog>=0.8.3
+boto>=2.36.0
+schedule>=0.3.1
