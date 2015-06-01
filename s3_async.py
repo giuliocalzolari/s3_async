@@ -62,8 +62,8 @@ class ChangeHandler(FileSystemEventHandler):
         if not os.path.isfile(key_file): 
             f = open(key_file,'w+')
             f.write("[default]")
-            f.write("accessKeyId:"+  self.current_repl["aws_access_key_id"]+"\n")
-            f.write("secretKey:"+  self.current_repl["aws_secret_access_key"]+"\n")
+            f.write("accessKeyId:"+  self.current_repl["acces_key"]+"\n")
+            f.write("secretKey:"+  self.current_repl["secret_key"]+"\n")
             f.write("region:"+  self.current_repl["region"]+"\n")
             f.close()
 
