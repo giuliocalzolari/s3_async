@@ -232,16 +232,17 @@ class S3aSync(LoggingApp):
         for i in instances:
             # pprint(i.__dict__)
 
-            if not str(i._state).startswith("running"):
-                self.log.debug("skip not running instances : "+ i.tags["Name"] +" - "+ i.id)
-                continue
-
             if idx == i.id:
                 self.log.debug("skip myslef on ec2_update_discovery : " + idx)
                 continue
 
 
             if fnmatch.fnmatch(i.tags["Name"], repl["match_ec2"]):
+
+                if not str(i._state).startswith("running"):
+                    self.log.debug("skip not running instances : "+ i.tags["Name"] +" - "+ i.id)
+                    continue
+
                 self.log.info("found new instances: " + i.tags["Name"])
                 if repl["mapping"] == "public_ip_address":
                     self.ec2_auto[i.id] = i.ip_address or ""
