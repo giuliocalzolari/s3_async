@@ -15,6 +15,7 @@ import schedule
 from pprint import pprint
 
 import boto
+import boto.utils
 import boto.ec2
 from boto.s3.key import Key
 
@@ -220,12 +221,22 @@ class S3aSync(LoggingApp):
     def ec2_update_discovery(self, repl):
         self.log.info("get all instances match: " + repl["match_ec2"])
 
+        idx = boto.utils.get_instance_metadata()['instance-id']
+        if idx != "":
+            self.log.info("I am a ec2 instaces with id : " + idx)
+
         self.ec2_auto = {}
         ec2_conn = boto.ec2.connect_to_region(repl["region"],aws_access_key_id=repl["acces_key"],aws_secret_access_key=repl["secret_key"])
         reservations = ec2_conn.get_all_instances()
         instances = [i for r in reservations for i in r.instances]
         for i in instances:
             # pprint(i.__dict__)
+
+            if idx == i.id:
+                self.log.info("skip myslef on ec2_update_discovery : " + idx)
+                continue
+
+
             if fnmatch.fnmatch(i.tags["Name"], repl["match_ec2"]):
                 self.log.info("found new instances: " + i.tags["Name"])
                 if repl["mapping"] == "public_ip_address":
@@ -244,6 +255,8 @@ class S3aSync(LoggingApp):
 
 
     def ec2_autodiscovery(self):
+
+
 
         for notif in self.config["notificator"]:
            
