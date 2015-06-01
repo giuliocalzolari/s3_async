@@ -56,6 +56,19 @@ class ChangeHandler(FileSystemEventHandler):
 
 
     def execute_sync(self):
+
+        key_file = self.config["basedir"]+"/.aws_".self.current_repl["bucket"].".key"
+
+        if not os.path.isfile(key_file): 
+            f = open(key_file,'w+')
+            f.write("[default]")
+            f.write("accessKeyId:"+  self.current_repl["aws_access_key_id"]+"\n")
+            f.write("secretKey:"+  self.current_repl["aws_secret_access_key"]+"\n")
+            f.write("region:"+  self.current_repl["region"]+"\n")
+            f.close()
+
+        os.environ["AWS_CONFIG_FILE"] = key_file
+
         cmd = "aws s3 sync s3://"+self.current_repl["bucket"]+" "+self.config["basedir"] +" --quiet --region "+self.current_repl["region"]
         command_run = subprocess.call([cmd], shell=True)
         if command_run != 0:
