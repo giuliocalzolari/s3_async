@@ -57,11 +57,11 @@ class ChangeHandler(FileSystemEventHandler):
 
     def execute_sync(self):
 
-        key_file = self.config["basedir"]+"/.aws_"+self.current_repl["bucket"]+".key"
+        key_file = os.path.dirname(os.path.realpath(__file__))+"/.aws_"+self.current_repl["bucket"]+".key"
 
         if not os.path.isfile(key_file): 
             f = open(key_file,'w+')
-            f.write("[default]")
+            f.write("[default]"+"\n")
             f.write("accessKeyId:"+  self.current_repl["acces_key"]+"\n")
             f.write("secretKey:"+  self.current_repl["secret_key"]+"\n")
             f.write("region:"+  self.current_repl["region"]+"\n")
