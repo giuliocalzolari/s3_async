@@ -223,7 +223,7 @@ class S3aSync(LoggingApp):
 
         idx = boto.utils.get_instance_metadata()['instance-id']
         if idx != "":
-            self.log.info("I am a ec2 instaces with id : " + idx)
+            self.log.debug("I am a ec2 instaces with id : " + idx)
 
         self.ec2_auto = {}
         ec2_conn = boto.ec2.connect_to_region(repl["region"],aws_access_key_id=repl["acces_key"],aws_secret_access_key=repl["secret_key"])
@@ -232,8 +232,12 @@ class S3aSync(LoggingApp):
         for i in instances:
             # pprint(i.__dict__)
 
+            if not str(i._state).startswith("running"):
+                self.log.debug("skip not running instances : " + i.id)
+                continue
+
             if idx == i.id:
-                self.log.info("skip myslef on ec2_update_discovery : " + idx)
+                self.log.debug("skip myslef on ec2_update_discovery : " + idx)
                 continue
 
 
