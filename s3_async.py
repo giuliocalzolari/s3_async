@@ -233,7 +233,7 @@ class S3aSync(LoggingApp):
             # pprint(i.__dict__)
 
             if not str(i._state).startswith("running"):
-                self.log.debug("skip not running instances : " + i.id)
+                self.log.debug("skip not running instances : " i.tags["Name"] +" - "+ i.id)
                 continue
 
             if idx == i.id:
