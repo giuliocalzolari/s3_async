@@ -22,7 +22,7 @@ from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
 
-__author__ = ['Giulio.Calzolari', 'Piotr Kazmierczak']
+__author__ = ['Giulio.Calzolari']
 
 
  
@@ -172,10 +172,14 @@ class ChangeHandler(FileSystemEventHandler):
     def on_any_event(self, event):
         "If any file or folder is changed"
 
-        if event.src_path.startswith('/tmp/'):
+        if event.src_path == '/tmp/.notify':
             self.log.debug("Update request ")
             self.copying = True
             self.replicate_action()
+            return
+
+        # to avoid update loop on tmp
+        if event.src_path.startswith('/tmp/'):
             return
 
         # to avoid update loop
