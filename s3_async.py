@@ -57,7 +57,7 @@ class ChangeHandler(FileSystemEventHandler):
 
     def execute_sync(self):
 
-        key_file = self.config["basedir"]+"/.aws_".self.current_repl["bucket"].".key"
+        key_file = self.config["basedir"]+"/.aws_"+self.current_repl["bucket"]+".key"
 
         if not os.path.isfile(key_file): 
             f = open(key_file,'w+')
